@@ -13,7 +13,7 @@ OCF_LE_SET_SCAN_ENABLE = 0x000C
 
 sock = bluez.hci_open_dev(DEVICE)
 
-bluez.hci_send_cmd(sock, OGF_LE_CTL, OCF_LE_SET_SCAN_ENABLE, b'0100')
+bluez.hci_send_cmd(sock, OGF_LE_CTL, OCF_LE_SET_SCAN_ENABLE, b'\x01\x00')
 
 flt = bluez.hci_filter_new()
 bluez.hci_filter_all_events(flt)
