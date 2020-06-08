@@ -11,3 +11,5 @@ Tools for learning how the [SwissCovid](https://www.bag.admin.ch/bag/en/home/kra
 ```console
 $ sudo apt install python3-bluez
 ```
+
+Tested on a Raspberry Pi 3 Model B+ running Raspbian GNU/Linux 10 (buster).
