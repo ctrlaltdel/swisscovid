@@ -16,4 +16,5 @@ Tested on a Raspberry Pi 3 Model B+ running Raspbian GNU/Linux 10 (buster).
 
 ## References
 
+* [Google Exposure Notifications landing page](https://www.google.com/covid19/exposurenotifications/)
 * [Exposure Notification - Bluetooth Specification v1.2.2](https://blog.google/documents/70/Exposure_Notification_-_Bluetooth_Specification_v1.2.2.pdf)
