@@ -3,6 +3,7 @@
 Tools for learning how the [SwissCovid](https://www.bag.admin.ch/bag/en/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/situation-schweiz-und-international.html#-2097806982) mobile application actually works.
 
 * `logger.py`: prints Exposure Notification packets received using BLE in JSON
+* `exposed.py`: prints exposure records from the API
 
 ## Requirements
 
