@@ -2,7 +2,7 @@
 
 import time
 import sys
-import datetime
+from datetime import datetime, timezone
 import struct
 import json
 import bluetooth._bluetooth as bluez
@@ -30,7 +30,7 @@ def process_packet(sock):
 
     if plen == 40 and packet[16:18] == b'\x6f\xfd' and packet[20:22] == b'\x6f\xfd':
         parsed_packet = {
-            'ts': datetime.datetime.now().isoformat(),
+            'ts': datetime.now(timezone.utc).isoformat(),
             'mac': "{0[12]:x}:{0[11]:x}:{0[10]:x}:{0[9]:x}:{0[8]:x}:{0[7]:x}".format(packet),
             'proximity': hexlify(packet[22:38]).decode('ascii'),
             'aem': hexlify(packet[38:42]).decode('ascii')
@@ -47,8 +47,9 @@ try:
     while True:
         try:
             process_packet(sock)
-        except bluez.error:
-            time.sleep(30)
+        except bluez.error as e:
+            time.sleep(10)
+            print("Bluetooth failed with error {}, reconnecting".format(e), file=sys.stderr)
             sock = open_bluetooth()
 
 except KeyboardInterrupt:
