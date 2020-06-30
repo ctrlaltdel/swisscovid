@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import json
+import arrow
 import bluetooth._bluetooth as bluez
 from pprint import pprint
 from logger import open_bluetooth, process_packet
@@ -14,8 +15,16 @@ def load():
         return(json.load(infile))
 
 def display(seen):
+    # Clear terminal
+    print(chr(27) + "[2J")
+
     for mac in seen.keys():
-        print("{}: {} {}".format(mac, seen[mac]['first_ts'], seen[mac]['last_ts']))
+        print("{} {} {}".format(
+            mac,
+            seen[mac]['first_ts'],
+            seen[mac]['last_ts'] if 'last_ts' in seen[mac] else ''),
+            arrow.get(seen[mac]['last_ts']) - arrow.get(seen[mac]['first_ts']) if 'last_ts' in seen[mac] else ''
+        )
     print()
 
 seen = load()

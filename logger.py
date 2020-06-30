@@ -30,9 +30,11 @@ def process_packet(sock):
         ptype, event, plen = struct.unpack("BBB", packet[:3])
 
         if plen == 40 and packet[16:18] == b'\x6f\xfd' and packet[20:22] == b'\x6f\xfd':
+                mac = "{0[12]:02x}:{0[11]:02x}:{0[10]:02x}:{0[9]:02x}:{0[8]:02x}:{0[7]:02x}".format(packet)
+
                 parsed_packet = {
                         'ts': datetime.now(timezone.utc).isoformat(),
-                        'mac': "{0[12]:x}:{0[11]:x}:{0[10]:x}:{0[9]:x}:{0[8]:x}:{0[7]:x}".format(packet),
+                        'mac': mac,
                         'proximity': hexlify(packet[22:38]).decode('ascii'),
                         'aem': hexlify(packet[38:42]).decode('ascii')
                 }
