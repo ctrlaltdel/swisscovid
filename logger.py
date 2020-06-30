@@ -25,32 +25,33 @@ def open_bluetooth():
     return(sock)
 
 def process_packet(sock):
-    packet = sock.recv(255)
-    ptype, event, plen = struct.unpack("BBB", packet[:3])
-
-    if plen == 40 and packet[16:18] == b'\x6f\xfd' and packet[20:22] == b'\x6f\xfd':
-        parsed_packet = {
-            'ts': datetime.now(timezone.utc).isoformat(),
-            'mac': "{0[12]:x}:{0[11]:x}:{0[10]:x}:{0[9]:x}:{0[8]:x}:{0[7]:x}".format(packet),
-            'proximity': hexlify(packet[22:38]).decode('ascii'),
-            'aem': hexlify(packet[38:42]).decode('ascii')
-        }
-
-        #print(ptype, event, plen)
-        #print(hexlify(packet))
-        print(json.dumps(parsed_packet))
-        sys.stdout.flush()
-
-sock = open_bluetooth()
-
-try:
     while True:
-        try:
-            process_packet(sock)
-        except bluez.error as e:
-            time.sleep(10)
-            print("Bluetooth failed with error {}, reconnecting".format(e), file=sys.stderr)
-            sock = open_bluetooth()
+        packet = sock.recv(255)
+        ptype, event, plen = struct.unpack("BBB", packet[:3])
 
-except KeyboardInterrupt:
-    pass
+        if plen == 40 and packet[16:18] == b'\x6f\xfd' and packet[20:22] == b'\x6f\xfd':
+                parsed_packet = {
+                        'ts': datetime.now(timezone.utc).isoformat(),
+                        'mac': "{0[12]:x}:{0[11]:x}:{0[10]:x}:{0[9]:x}:{0[8]:x}:{0[7]:x}".format(packet),
+                        'proximity': hexlify(packet[22:38]).decode('ascii'),
+                        'aem': hexlify(packet[38:42]).decode('ascii')
+                }
+
+                return(parsed_packet)
+
+if __name__ == '__main__':
+    sock = open_bluetooth()
+
+    try:
+        while True:
+            try:
+                print(json.dumps(process_packet(sock)))
+                sys.stdout.flush()
+
+            except bluez.error as e:
+                time.sleep(10)
+                print("Bluetooth failed with error {}, reconnecting".format(e), file=sys.stderr)
+                sock = open_bluetooth()
+
+    except KeyboardInterrupt:
+        pass
