@@ -19,9 +19,10 @@ def display(seen):
     print(chr(27) + "[2J")
 
     for mac in seen.keys():
-        print("{} {} {}".format(
+        print("{} {} {:04}".format(
             mac,
             seen[mac]['first_ts'],
+            seen[mac]['counter'],
             seen[mac]['last_ts'] if 'last_ts' in seen[mac] else ''),
             arrow.get(seen[mac]['last_ts']) - arrow.get(seen[mac]['first_ts']) if 'last_ts' in seen[mac] else ''
         )
@@ -42,8 +43,10 @@ try:
             if not mac in seen:
                 seen[mac] = {}
                 seen[mac]['first_ts'] = ts
+                seen[mac]['counter'] = 1
             else:
                 seen[mac]['last_ts'] = ts
+                seen[mac]['counter'] += 1
 
         except bluez.error as e:
             time.sleep(10)
