@@ -4,6 +4,7 @@ Tools for learning how the [SwissCovid](https://www.bag.admin.ch/bag/en/home/kra
 
 * `logger.py`: prints Exposure Notification packets received using BLE in JSON
 * `exposed.py`: prints exposure records from the API
+* `status.py`: displays all devices currently broadcasting Expose Notification packets
 
 ## Requirements
 
