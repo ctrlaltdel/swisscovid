@@ -11,10 +11,9 @@ from simplejson.errors import JSONDecodeError
 #URL = 'https://www.pt-a.bfs.admin.ch/v1/exposedjson/{}'
 URL = 'https://www.pt.bfs.admin.ch/v1/exposedjson/{}'
 
-START = arrow.get('2020-06-15T10:00:00+00:00')
 BATCH_LENGTH = 2 * 60 * 60 * 1000
 
-timestamp = int(START.format("X")) * 1000
+timestamp = int(arrow.now().format('X')) * 1000
 
 while True:
 	batch_release_time = timestamp - (timestamp % BATCH_LENGTH)
@@ -23,11 +22,11 @@ while True:
 	try:
 		print(r.json())
 	except JSONDecodeError:
-		print('Error: ', timestamp, r.content)
+		if r.content == b'':
+			sys.exit(0)
+		else:
+			print('Error: ', timestamp, r.content)
 
 	sys.stdout.flush()
 
-	timestamp += BATCH_LENGTH
-
-	if timestamp > int(arrow.now().format('X')) * 1000:
-		sys.exit(0)
+	timestamp -= BATCH_LENGTH
