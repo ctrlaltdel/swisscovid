@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import sys
+import time
 import json
 import arrow
 import bluetooth._bluetooth as bluez
