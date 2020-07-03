@@ -51,6 +51,7 @@ try:
                 seen[mac]['counter'] += 1
 
         except bluez.error as e:
+            save(seen)
             time.sleep(10)
             print("Bluetooth failed with error {}, reconnecting".format(e), file=sys.stderr)
             sock = open_bluetooth()
