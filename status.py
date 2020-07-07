@@ -13,8 +13,11 @@ def save(data):
         json.dump(data, outfile)
 
 def load():
-    with open('seen.json', 'r') as infile:
-        return(json.load(infile))
+    try:
+        with open('seen.json', 'r') as infile:
+            return(json.load(infile))
+    except FileNotFoundError:
+        return({})
 
 def display(seen):
     # Clear terminal
