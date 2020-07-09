@@ -15,18 +15,23 @@ BATCH_LENGTH = 2 * 60 * 60 * 1000
 
 timestamp = int(arrow.now().format('X')) * 1000
 
+exposed = []
+
 while True:
 	batch_release_time = timestamp - (timestamp % BATCH_LENGTH)
 	r = requests.get(URL.format(batch_release_time))
 
 	try:
 		print(r.json())
+		exposed = exposed + r.json()['exposed']
 	except JSONDecodeError:
 		if r.content == b'':
-			sys.exit(0)
+			break
 		else:
 			print('Error: ', timestamp, r.content)
 
 	sys.stdout.flush()
 
 	timestamp -= BATCH_LENGTH
+
+print({'batchReleaseTime': 'ALL', 'exposed': exposed})
